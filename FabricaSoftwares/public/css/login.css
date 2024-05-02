@@ -1,0 +1,23 @@
+#container_principal {
+    width: 100vw;
+    height: 100vh;
+    background: #6C7A89;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#formulario{
+    width: 35%;
+}
+
+#title{
+    text-align: center;
+}
+#submit{
+    text-align: center;
+}
+#pergunta_cadastro{
+    text-align: end;
+}

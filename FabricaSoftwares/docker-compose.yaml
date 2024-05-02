@@ -1,0 +1,43 @@
+# O docker-compose é utilizado para montar a infraestrutura incial do
+# nosso projeto com vários containers. Para mais informações sobre
+# consulte a documentação em: https://docs.docker.com/compose/
+
+# Simpesmente nome e a versão do projeto
+# https://docs.docker.com/compose/compose-file/04-version-and-name/
+version: "1.0"
+name: fabricasoftwares
+
+# Os serviços são os recursos computacionais que serão utilizados
+# pela aplicação. Para cada uma das seções dentro de serviços, pesquise
+# mais sobre em https://docs.docker.com/compose/compose-file/05-services/
+services:
+  php:
+    build: .
+    networks:
+      - laravel
+    volumes:
+      - .:/var/www/html
+    ports:
+      - '90:90'
+
+  # Documentação do docker hub https://hub.docker.com/_/mysql
+  mysql:
+    image: mysql:5.7.22
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
+      MYSQL_USER: ${DB_USERNAME:-username}
+    volumes:
+      - ./.docker/mysql/dbdata:/var/lib/mysql
+    ports: 
+      - "3388:3306"
+    networks:
+      - laravel
+    
+# As networks que serão utilizadas pelos serviços
+# Consulte a documentação: https://docs.docker.com/compose/compose-file/06-networks/
+networks:
+  laravel:
+    driver: bridge # Veja a diferença entre host e bridge em https://docs.docker.com/network/drivers/
